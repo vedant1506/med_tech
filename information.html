@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Awareness</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            padding-top: 80px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 50px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(135deg, rgb(11, 78, 78) 0%, rgb(20, 110, 110) 100%);
+            color: white;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: #e0f2f2;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-img img {
+            height: 70px;
+            width: auto;
+        }
+
+        ul {
+            display: flex;
+            list-style: none;
+        }
+
+        ul li {
+            margin: 0 20px;
+        }
+
+        ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        ul li a:hover {
+            color: #e0f2f2;
+            transform: translateY(-2px);
+        }
+
+        #bar {
+            font-size: 25px;
+            display: none;
+            cursor: pointer;
+        }
+
+        .hero {
+            background: url('mental-health-banner.jpg') no-repeat center center/cover;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0b4e4e;
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .section img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .section h2 {
+            color: #0b4e4e;
+        }
+
+        .section p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #0b4e4e;
+            color: white;
+            margin-top: 40px;
+        }
+
+        /* Chat Assistant Styles */
+        .chat-assistant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .chat-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgb(11, 78, 78);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-window {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 450px;
+            height: 600px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-window.active {
+            display: flex;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .chat-header {
+            background: rgb(11, 78, 78);
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .chat-input button {
+            background: rgb(11, 78, 78);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="logo">
+            <div class="logo-img"><img src="12Health.png"></div>
+        </div>
+        <i id="bar" class="fa-solid fa-bars"></i>
+
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="information.html"><i class="fas fa-info-circle"></i> Information</a></li>
+            <li><a href="consultancy.html"><i class="fas fa-comments"></i> Consultancy</a></li>
+            <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact Us</a></li>
+            <li><a href="about.html"><i class="fas fa-users"></i> About Us</a></li>
+            <li><a href="log.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="hero">
+        Common Mental Health Issues in Youths
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <img src="DEP.png">
+            <div>
+                <h2>Depression</h2>
+                <p> Depression is a mental health condition that makes people feel sad, hopeless, and uninterested in
+                    things
+                    they normally enjoy. It can affect how you think, feel, and act, and can make everyday tasks feel
+                    overwhelming.
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <img src="ANXITY.jpg">
+            <div>
+                <h2>Anxiety</h2>
+                <p>Anxiety is a feeling of worry, nervousness, or fear about something that might happen. It can make
+                    you feel uneasy or stressed, like when you're facing a big event or uncertain situations.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="section">
+            <img src="ocd1.jpg">
+            <div>
+                <h2>Obsessive compulsive disorder(OCD)</h2>
+                <p> it is a condition where people have repeated, unwanted thoughts (obsessions) and feel the need to do
+                    certain actions or rituals (compulsions) to try to make the thoughts go away. These actions can take
+                    up a
+                    lot of time and make daily life harder, even though the person may know the rituals don't really
+                    help.
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <img src="schjpeg.jpg">
+            <div>
+                <h2>Schizophrenia</h2>
+                <p>it is a mental health condition that affects how a person thinks, feels, and acts. People with
+                    schizophrenia may have trouble telling the difference between what's real and what's not, and they
+                    might hear
+                    voices or see things that aren't there. It can also cause confusion, trouble focusing, and unusual
+                    thoughts or
+                    behaviors. Treatment, like medication and therapy, can help manage the symptoms.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="section">
+            <img src="bd.jpg">
+            <div>
+                <h2>Bipolar disorder</h2>
+                <p>Bipolar disorder is a mental health condition that causes extreme mood changes. People with
+                    bipolar disorder can have periods of very high energy and happiness (called mania) and other times
+                    when they feel
+                    very sad, tired, or down (called depression). These mood swings can affect a person's daily life.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="section">
+            <img src="eating.jpg">
+            <div>
+                <h2>Eating disorder</h2>
+                <p>An eating disorder is a condition where a person has unhealthy thoughts and behaviors around
+                    food, eating, and their body. This can include things like eating too much or too little, or
+                    being very concerned about weight and appearance. Eating disorders can affect a person's health and
+                    emotions.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <img src="hel.jpg">
+            <div>
+                <h2>Hallucination</h2>
+                <p>Hallucinations are when a person sees, hears, smells, tastes, or feels something that
+                    isn't
+                    actually there. These false experiences can happen in the mind, and the person might
+                    believe they are real,
+                    even
+                    though others don't perceive them.</p>
+            </div>
+        </div>
+
+
+        <div class="section">
+            <img src="iil.jpg">
+            <div>
+                <h2>Illusion</h2>
+                <p>An illusion is when something appears to be different from what it really is. It's a
+                    false or
+                    misleading image or perception, like seeing something that looks bigger, smaller, or a
+                    different color than
+                    it
+                    actually is.</p>
+            </div>
+
+        </div>
+
+
+
+        <div class="section">
+            <img src="aut.jpg">
+            <div>
+                <h2>autism</h2>
+                <p> Autism is a condition that affects how a person thinks, learns, and interacts with
+                    others. People with
+                    autism might have trouble with communication, understanding social cues, and may prefer
+                    routines or certain
+                    activities. Everyone with autism is different, and they may have unique strengths and
+                    challenges.</p>
+            </div>
+
+        </div>
+
+
+        <div class="section">
+            <img src="adhd.jpg">
+            <div>
+                <h2>Attention deficit hyperactivity disorder (ADHD)</h2>
+                <p>it is a condition that makes it hard for a person to focus,
+                    stay still, or control impulses. People with ADHD might be easily distracted, have
+                    trouble finishing tasks,
+                    or
+                    act without thinking. It can affect school, work, and relationships.</p>
+            </div>
+
+        </div>
+
+
+        <div class="section">
+            <img src="ptsd.jpg">
+            <div>
+                <h2>Post-Traumatic Stress Disorder (PTSD)</h2>
+                <P>PTSD happens after a person goes through a very scary or traumatic event. It can cause
+                    flashbacks, nightmares, and strong feelings of fear even when the danger is gone.
+                </P>
+            </div>
+
+        </div>
+
+        <div class="section">
+            <img src="pd.jpg">
+            <div>
+                <h2>Panic Disorder</h2>
+                <p>panic disorder causes sudden and intense episodes of fear, called panic attacks. These
+                    attacks can cause a racing heart, sweating, dizziness, and trouble breathing, even if
+                    there's no real danger.
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <img src="sad.jpg">
+
+            <div>
+                <h2>Social Anxiety Disorder</h2>
+                <p>Social anxiety is a strong fear of being judged or embarrassed in social situations.
+                    People with social anxiety may avoid talking to others, meeting new people, or speaking
+                    in public.</p>
+            </div>
+
+        </div>
+
+        <div class="section">
+            <img src="pho.jpg">
+            <div>
+                <h2>Phobias</h2>
+                <p> A phobia is an intense fear of something that is not actually dangerous, like heights,
+                    spiders, or crowded places. Even thinking about the thing can cause strong fear.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <img src="did.jpg">
+            <div>
+                <h2> Dissociative Identity Disorder (DID)</h2>
+                <p> DID (formerly called multiple personality disorder) is when a person has two or more
+                    separate identities or personalities. These identities may take control at different
+                    times, and the person may not remember what happens when another identity is in control.
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <img src="dpd.jpg">
+            <div>
+                <h2> Borderline Personality Disorder (BPD)</h2>
+                <p> BPD affects how a person feels about themselves and others. It can cause extreme mood
+                    swings, fear of being abandoned, and trouble maintaining relationships.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="section">
+            <img src="npd.jpg">
+            <div>
+                <h2> Narcissistic Personality Disorder (NPD)</h2>
+                <p> People with NPD may believe they are more important than others, need constant
+                    admiration, and have trouble understanding other people’s feelings.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="section">
+            <img src="aspd.jpg">
+            <div>
+                <h2>Antisocial Personality Disorder (ASPD)</h2>
+                <p>This disorder makes people ignore rules and the rights of others. They may lie, act
+                    aggressively, or not feel guilty for hurting others.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="section">
+            <img src="apd.jpg">
+            <div>
+                <h2>Avoidant Personality Disorder</h2>
+                <p>People with this disorder are extremely shy and afraid of being judged. They avoid social
+                    situations because they fear rejection or criticism.
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <img src="dpd.jpg">
+
+            <div>
+                <h2>Dependent Personality Disorder</h2>
+                <p>This disorder makes people feel like they always need someone else to take care of them.
+                    They may have trouble making decisions and fear being alone.
+                </p>
+            </div>
+        </div>
+
+    <!-- Chat Assistant -->
+    <div class="chat-assistant">
+        <button class="chat-button" onclick="toggleChat()">
+            <i class="fas fa-comments"></i>
+        </button>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-user-md" style="font-size: 24px;"></i>
+                    <div>
+                        <h3 style="margin: 0;">Dr. Genie</h3>
+                        <small style="color: #e0f2f2;">AI Health Assistant</small>
+                    </div>
+                </div>
+                <button onclick="toggleChat()" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer;">×</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div style="background: #e1f5f5; padding: 10px; border-radius: 10px; max-width: 80%; margin-bottom: 10px;">
+                    Hello! I'm Dr. Genie, your AI health assistant. I can help you with general health questions and provide science-based information. How can I assist you today?
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="Ask me about your health concerns...">
+                <button onclick="sendMessage()" style="display: flex; align-items: center; gap: 5px;">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Replace with your actual API key
+        const API_KEY = 'AIzaSyBtxG0TWr4XU8t0VVvgOrB7LZwg9MksSPE';
+        const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent';
+
+        function toggleChat() {
+            const chatWindow = document.getElementById('chatWindow');
+            chatWindow.classList.toggle('active');
+        }
+
+        async function generateGeminiResponse(prompt) {
+            try {
+                const healthContext = `You are Dr. Genie, a helpful AI health assistant. You can provide general health information and guidance, but always:
+                - Focus only on health-related queries
+                - Provide science-based information
+                - Recommend consulting a doctor for serious concerns
+                - Avoid diagnosing specific conditions
+                - Be empathetic and professional
+                
+User's query: ${prompt}`;
+
+                const response = await fetch(`${API_URL}?key=${API_KEY}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: healthContext
+                            }]
+                        }],
+                        generationConfig: {
+                            temperature: 0.7,
+                            topK: 40,
+                            topP: 0.95,
+                            maxOutputTokens: 1024,
+                        },
+                        safetySettings: [
+                            {
+                                category: "HARM_CATEGORY_HARASSMENT",
+                                threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                            },
+                            {
+                                category: "HARM_CATEGORY_HATE_SPEECH",
+                                threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                            },
+                            {
+                                category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                                threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                            },
+                            {
+                                category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+                                threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                            }
+                        ]
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`API Error: ${errorData.error?.message || response.statusText}`);
+                }
+
+                const data = await response.json();
+                const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (!aiResponse) {
+                    throw new Error('No valid response from the API');
+                }
+
+                return aiResponse;
+            } catch (error) {
+                console.error('Error:', error);
+                return 'I apologize, but I encountered an error. Please ensure your API key is valid and try again.';
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const messages = document.getElementById('chatMessages');
+            const userMessage = input.value.trim();
+
+            if (userMessage !== '') {
+                // Display user message
+                const messageDiv = document.createElement('div');
+                messageDiv.style.marginBottom = '10px';
+                messageDiv.innerHTML = `<div style="background: #f0f0f0; padding: 10px; border-radius: 10px; max-width: 80%; margin-left: auto;">${userMessage}</div>`;
+                messages.appendChild(messageDiv);
+
+                // Clear input and scroll
+                input.value = '';
+                messages.scrollTop = messages.scrollHeight;
+
+                // Show typing indicator
+                const typingDiv = document.createElement('div');
+                typingDiv.style.marginBottom = '10px';
+                typingDiv.innerHTML = `<div style="background: #e1f5f5; padding: 10px; border-radius: 10px; max-width: 80%;">Typing...</div>`;
+                messages.appendChild(typingDiv);
+                messages.scrollTop = messages.scrollHeight;
+
+                // Get AI response
+                const aiResponse = await generateGeminiResponse(userMessage);
+
+                // Remove typing indicator and show AI response
+                messages.removeChild(typingDiv);
+                const responseDiv = document.createElement('div');
+                responseDiv.style.marginBottom = '10px';
+                responseDiv.innerHTML = `<div style="background: #e1f5f5; padding: 10px; border-radius: 10px; max-width: 80%;">${aiResponse}</div>`;
+                messages.appendChild(responseDiv);
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+
+        // Allow sending message with Enter key
+        document.getElementById('messageInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+
+</html>

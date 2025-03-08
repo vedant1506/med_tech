@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Health First</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        #error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 50px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(135deg, rgb(11, 78, 78) 0%, rgb(20, 110, 110) 100%);
+            color: white;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img img {
+            height: 70px;
+            width: auto;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #e0f2f2;
+        }
+
+        .login-container {
+            max-width: 800px;
+            height: 680px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            overflow: hidden;
+        }
+
+        .login-form h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .login-form p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .form-group label {
+            color: #555;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+        }
+
+        .form-group input {
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            line-height: 1.5;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: rgb(11, 78, 78);
+            outline: none;
+        }
+
+        .signup-link {
+            text-align: center;
+            color: #666;
+            font-size: 0.95rem;
+            margin-top: 10px;
+        }
+
+        .login-image {
+            flex: 1;
+            background-image: url('p2.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 500px;
+        }
+
+        .login-form {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .login-form h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .login-form p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .google-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .social-button:hover {
+            background-color: #f5f5f5;
+        }
+
+        .social-button i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+            color: #4285f4;
+        }
+
+        #login-button {
+            background: linear-gradient(135deg, rgb(11, 78, 78) 0%, rgb(20, 110, 110) 100%);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        #login-button:hover {
+            background: linear-gradient(135deg, rgb(20, 110, 110) 0%, rgb(32, 178, 170) 100%);
+        }
+        .google-btn:hover {
+            background-color: #f5f5f5;
+        }
+
+        .google-btn img {
+            width: 20px;
+            margin-right: 10px;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .divider hr {
+            flex: 1;
+            border: none;
+            border-top: 1px solid #ddd;
+        }
+
+        .divider span {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .login-btn {
+            background: rgb(11, 78, 78);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background: rgb(20, 110, 110);
+        }
+
+        .signup-link {
+            text-align: center;
+            color: #666;
+        }
+
+        .signup-link a {
+            color: rgb(11, 78, 78);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        #create_button {
+            background: rgb(11, 78, 78);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+            width: 100%;
+            text-align: center;
+        }
+
+        #create_button:hover {
+            background: rgb(20, 110, 110);
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="logo">
+            <div class="logo-img"><img src="12Health.png"></div>
+        </div>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="information.html"><i class="fas fa-info-circle"></i> Information</a></li>
+            <li><a href="consultancy.html"><i class="fas fa-comments"></i> Consultancy</a></li>
+            <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact Us</a></li>
+            <li><a href="about.html"><i class="fas fa-users"></i> About Us</a></li>
+            <li><a href="log.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="login-container">
+        <div class="login-image"></div>
+        <div class="login-form">
+            <h1>Welcome Back</h1>
+            <p>Please enter your details to sign in</p>
+
+            <div class="social-buttons">
+                <button class="social-button" id="google-login">
+                    <i class="fab fa-google"></i> Sign in with Google
+                </button>
+            </div>
+
+            <div class="divider">
+                <hr>
+                <span>or</span>
+                <hr>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password">
+            </div>
+
+            <button id="login-button">Sign In</button>
+            <div id="error-message"></div>
+
+            <p class="signup-link">Don't have an account? <a href="sign.html">Sign up</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCjqrv80zEoWDaEGe9STuHijYeO2mMZ3O0",
+            authDomain: "neurotech-haven.firebaseapp.com",
+            projectId: "neurotech-haven",
+            storageBucket: "neurotech-haven.appspot.com",
+            messagingSenderId: "239242066260",
+            appId: "1:239242066260:web:d1ac756b0600ef8b0f30c1"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Get elements
+        const googleLoginBtn = document.getElementById('google-login');
+        const loginButton = document.getElementById('login-button');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const errorMessage = document.getElementById('error-message');
+
+        // Google Sign In
+        googleLoginBtn.addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider)
+                .then((result) => {
+                    // Handle successful login
+                    window.location.href = 'index.html';
+                })
+                .catch((error) => {
+                    showError(error.message);
+                });
+        });
+
+        // Email/Password Sign In
+        loginButton.addEventListener('click', () => {
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            if (!email || !password) {
+                showError('Please fill in all fields');
+                return;
+            }
+
+            // Email format validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showError('Please enter a valid email address');
+                return;
+            }
+
+            // Password length validation
+            if (password.length < 6) {
+                showError('Password must be at least 6 characters long');
+                return;
+            }
+
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Handle successful login
+                    window.location.href = 'index.html';
+                })
+                .catch((error) => {
+                    // Handle specific Firebase auth errors
+                    let errorMessage;
+                    switch (error.code) {
+                        case 'auth/invalid-credential':
+                            errorMessage = 'Invalid email or password. Please try again.';
+                            break;
+                        case 'auth/user-disabled':
+                            errorMessage = 'This account has been disabled.';
+                            break;
+                        case 'auth/user-not-found':
+                            errorMessage = 'No account found with this email.';
+                            break;
+                        case 'auth/wrong-password':
+                            errorMessage = 'Incorrect password.';
+                            break;
+                        case 'auth/too-many-requests':
+                            errorMessage = 'Too many failed attempts. Please try again later.';
+                            break;
+                        default:
+                            errorMessage = error.message;
+                    }
+                    showError(errorMessage);
+                });
+        });
+
+        function showError(message) {
+            errorMessage.style.display = 'block';
+            errorMessage.textContent = message;
+        }
+
+        // Check if user is already logged in
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+
+</html>
