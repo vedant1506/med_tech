@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Doctor - Mental Health Care</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* Navigation Bar */
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 50px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(135deg, rgb(11, 78, 78) 0%, rgb(20, 110, 110) 100%);
+            color: white;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: #e0f2f2;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-img img {
+            height: 50px;
+            width: auto;
+        }
+
+        ul {
+            display: flex;
+            list-style: none;
+        }
+
+        ul li {
+            margin: 0 20px;
+        }
+
+        ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        ul li a:hover {
+            color: #e0f2f2;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Nav */
+        #bar {
+            font-size: 25px;
+            display: none;
+            cursor: pointer;
+        }
+        </style>
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f2f5;
+            margin: 0;
+        }
+
+        .chat-container {
+            width: 600px;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-box {
+            height: 350px;
+            overflow-y: auto;
+            border-radius: 8px;
+            padding: 10px;
+            background: #eaf0f7;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background: #007bff;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 12px;
+            max-width: 70%;
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            background: #34c759;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 12px;
+            max-width: 70%;
+        }
+
+        .input-area {
+            display: flex;
+            margin-top: 10px;
+        }
+
+        .input-area input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .input-area button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin-left: 5px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .input-area button:hover {
+            background: #0056b3;
+        }
+
+        .mic-button {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin-left: 5px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 16px;
+        }
+
+        .mic-button:hover {
+            background: #c0392b;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+            <div class="logo">
+                <div class="logo-img"><img src="Healthfinal-removebg-preview.png" alt="Health First Logo"></div>
+            </div>
+            <i id="bar" class="fa-solid fa-bars"></i>
+
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="Ai Doctor.html"><i class="fas fa-robot"></i> AI Doctor</a></li>
+                <li><a href="information.html"><i class="fas fa-info-circle"></i> Information</a></li>
+                <li><a href="consultancy.html"><i class="fas fa-comments"></i> Consultancy</a></li>
+                <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact Us</a></li>
+                <li><a href="about.html"><i class="fas fa-users"></i> About Us</a></li>
+                <li><a href="sign.html"><i class="fas fa-sign-in-alt"></i> Sign In</a></li>
+            </ul>
+        </nav>
+        </div>
+        <style>
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+        
+                body {
+                    font-family: 'Roboto', sans-serif;
+                    background-color: #f5f5f5;
+                    color: #333;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    margin: 0;
+                }
+        
+
+        
+                .chat-container {
+                    width: 600px;
+                    background: white;
+                    padding: 20px;
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                    border-radius: 12px;
+                    display: flex;
+                    flex-direction: column;
+                }
+        
+                .chat-box {
+                    height: 350px;
+                    overflow-y: auto;
+                    border-radius: 8px;
+                    padding: 10px;
+                    background: #eaf0f7;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                }
+        
+                .user-message, .bot-message {
+                    padding: 8px 12px;
+                    border-radius: 12px;
+                    max-width: 70%;
+                }
+        
+                .user-message {
+                    align-self: flex-end;
+                    background: #007bff;
+                    color: white;
+                }
+        
+                .bot-message {
+                    align-self: flex-start;
+                    background: #34c759;
+                    color: white;
+                }
+        
+                .input-area {
+                    display: flex;
+                    margin-top: 10px;
+                }
+        
+                .input-area input {
+                    flex: 1;
+                    padding: 10px;
+                    border: 1px solid #ccc;
+                    border-radius: 20px;
+                    font-size: 14px;
+                }
+        
+                .input-area button {
+                    background: #007bff;
+                    color: white;
+                    border: none;
+                    padding: 10px 15px;
+                    margin-left: 5px;
+                    border-radius: 20px;
+                    cursor: pointer;
+                    transition: 0.3s;
+                }
+        
+                .input-area button:hover {
+                    background: #0056b3;
+                }
+            </style>
+        </head>
+        
+        <body>
+            <div class="chat-container">
+                <h2 style="text-align: center; margin-bottom: 10px;">Dr.Genie</h2>
+                <div class="chat-box" id="chat-box"></div>
+                <div class="input-area">
+                    <input type="text" id="user-input" placeholder="Type a message...">
+                    <button onclick="sendMessage()">Send</button>
+                    <button class="mic-button" onclick="startListening()">🎙️</button>
+                </div>
+            </div>
+        
+            <script>
+                const API_KEY = "AIzaSyCCkk5F3EEUvehH11MIMLb12soIUnOOSsM"; // Replace with your API Key
+                const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+        
+                let selectedVoice = null;
+        
+                // Function to get and set the female voice
+                function setVoice() {
+                    const speechSynthesis = window.speechSynthesis;
+                    const voices = speechSynthesis.getVoices();
+                    selectedVoice = voices.find(voice => voice.name.toLowerCase().includes("female")) || voices[0];
+                }
+        
+                // Function to start speech recognition
+                let recognition;
+                let isListening = false;
+        
+                function startListening() {
+                    if (!('webkitSpeechRecognition' in window)) {
+                        alert('Speech Recognition API not supported in this browser.');
+                        return;
+                    }
+        
+                    if (isListening) {
+                        recognition.stop();
+                        return;
+                    }
+        
+                    recognition = new webkitSpeechRecognition();
+                    recognition.lang = 'en-US'; // Set to English
+                    recognition.interimResults = false;
+                    recognition.maxAlternatives = 1;
+        
+                    recognition.onstart = function () {
+                        isListening = true;
+                        console.log("Listening...");
+                    };
+        
+                    recognition.onresult = function (event) {
+                        let speechToText = event.results[0][0].transcript;
+                        document.getElementById('user-input').value = speechToText;
+                        console.log('Recognized text:', speechToText);
+                    };
+        
+                    recognition.onerror = function (event) {
+                        console.error('Speech recognition error:', event.error);
+                    };
+        
+                    recognition.onend = function () {
+                        isListening = false;
+                        console.log("Stopped listening...");
+                    };
+        
+                    recognition.start();
+                }
+        
+                // Function to send a message
+                async function sendMessage() {
+                    let inputField = document.getElementById("user-input");
+                    let message = inputField.value.trim();
+                    if (!message) return; // Don't send empty messages
+        
+                    displayMessage(message, "user");
+                    inputField.value = ""; // Clear input field
+                    displayTypingEffect(); // Show typing indicator
+        
+                    try {
+                        const response = await fetch(API_URL, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ contents: [{ parts: [{ text: message }] }] })
+                        });
+        
+                        if (!response.ok) throw new Error(`HTTP Error! Status: ${response.status}`);
+        
+                        const data = await response.json();
+                        console.log("API Response:", data); // For debugging
+        
+                        let reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || "I'm sorry, I didn't understand that.";
+                        
+                        removeTypingEffect(); // Remove typing effect
+                        typeMessage(reply, "bot"); // Display bot's reply with typing effect
+        
+                    } catch (error) {
+                        console.error("Error:", error);
+                        removeTypingEffect();
+                        displayMessage("⚠ Error: There might be an issue with the API connection.", "bot");
+                    }
+                }
+        
+                // Function to simulate typing effect
+                function typeMessage(message, sender) {
+                    let chatBox = document.getElementById("chat-box");
+                    let messageElement = document.createElement("p");
+                    messageElement.className = sender === "user" ? "user-message" : "bot-message";
+                    chatBox.appendChild(messageElement);
+        
+                    let sentences = message.split('.'); // Split by sentence ending with period.
+                    let currentSentenceIndex = 0;
+        
+                    function typeCharacter() {
+                        if (currentSentenceIndex < sentences.length) {
+                            let sentence = sentences[currentSentenceIndex].trim();
+        
+                            if (sentence.length > 0) {
+                                messageElement.innerHTML += sentence + ".<br>"; // Add <br> after each sentence
+                                currentSentenceIndex++;
+                            }
+        
+                            setTimeout(typeCharacter, 50); // Adjust typing speed here
+                        }
+                    }
+        
+                    typeCharacter();
+        
+                    chatBox.scrollTop = chatBox.scrollHeight; // Scroll to bottom after adding message
+                }
+        
+                // Show typing indicator
+                function displayTypingEffect() {
+                    let chatBox = document.getElementById("chat-box");
+                    let typingIndicator = document.createElement("p");
+                    typingIndicator.id = "typing-indicator";
+                    typingIndicator.className = "bot-message";
+                    typingIndicator.textContent = "Typing...";
+                    chatBox.appendChild(typingIndicator);
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+        
+                // Remove typing indicator
+                function removeTypingEffect() {
+                    let typingIndicator = document.getElementById("typing-indicator");
+                    if (typingIndicator) {
+                        typingIndicator.remove();
+                    }
+                }
+        
+                // Display normal messages with new lines between sentences
+                function displayMessage(message, sender) {
+                    let chatBox = document.getElementById("chat-box");
+                    let messageElement = document.createElement("p");
+                    messageElement.className = sender === "user" ? "user-message" : "bot-message";
+        
+                    // Display message with line breaks after each sentence
+                    messageElement.innerHTML = message.replace(/([.?!])\s*(?=\S)/g, "$1<br>");
+                    chatBox.appendChild(messageElement);
+                    chatBox.scrollTop = chatBox.scrollHeight; // Scroll to bottom after adding message
+                }
+        
+                // Initialize voice when the page loads
+                window.speechSynthesis.onvoiceschanged = setVoice;
+        
+                // Call setVoice on page load to initialize the voice options
+                setVoice();
+            </script>
+        </body>
+        
+        </html>
+        

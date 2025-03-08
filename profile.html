@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Health First</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 50px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(135deg, rgb(11, 78, 78) 0%, rgb(20, 110, 110) 100%);
+            color: white;
+            z-index: 1000;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            align-items: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: transform 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            position: relative;
+        }
+
+        nav a:hover {
+            transform: translateY(-2px);
+        }
+
+        .user-profile {
+            position: relative;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 10px 0;
+            min-width: 180px;
+            display: none;
+            margin-top: 10px;
+        }
+
+        .user-profile:hover .user-dropdown {
+            display: block;
+        }
+
+        .user-dropdown a {
+            color: #333;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-dropdown a:hover {
+            background: #f5f5f5;
+            transform: none;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 20px;
+            }
+
+            nav ul {
+                gap: 15px;
+            }
+
+            nav a {
+                font-size: 14px;
+            }
+        }
+
+        .profile-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .profile-avatar i {
+            font-size: 60px;
+            color: #666;
+        }
+
+        .profile-info {
+            display: grid;
+            gap: 20px;
+        }
+
+        .info-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .info-group label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .info-group .value {
+            font-size: 16px;
+            color: #333;
+            padding: 10px;
+            background: #f8f8f8;
+            border-radius: 5px;
+        }
+
+        .edit-button {
+            background: rgb(11, 78, 78);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+
+        .edit-button:hover {
+            background: rgb(20, 110, 110);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">
+            <img src="Health first.png" alt="Logo" style="height: 50px;">
+        </a>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="information.html"><i class="fas fa-info-circle"></i> Information</a></li>
+            <li><a href="consultancy.html"><i class="fas fa-comments"></i> Consultancy</a></li>
+            <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact Us</a></li>
+            <li><a href="about.html"><i class="fas fa-users"></i> About Us</a></li>
+            <li id="login-item"><a href="log.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+            <li class="user-profile" style="display: none;">
+                <a href="#" id="userProfileBtn">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="userName">User</span>
+                </a>
+                <div class="user-dropdown">
+                    <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+                    <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <h1>Profile</h1>
+        </div>
+
+        <div class="profile-info">
+            <div class="info-group">
+                <label>Name</label>
+                <div class="value" id="profileName">Loading...</div>
+            </div>
+            <div class="info-group">
+                <label>Email</label>
+                <div class="value" id="profileEmail">Loading...</div>
+            </div>
+            <div class="info-group">
+                <label>Account Created</label>
+                <div class="value" id="profileCreated">Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCjqrv80zEoWDaEGe9STuHijYeO2mMZ3O0",
+            authDomain: "neurotech-haven.firebaseapp.com",
+            projectId: "neurotech-haven",
+            storageBucket: "neurotech-haven.appspot.com",
+            messagingSenderId: "239242066260",
+            appId: "1:239242066260:web:d1ac756b0600ef8b0f30c1"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Check login status and update profile
+        function checkLoginStatus() {
+            const userProfile = document.querySelector('.user-profile');
+            const loginItem = document.getElementById('login-item');
+            const userName = document.getElementById('userName');
+
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
+                    userProfile.style.display = 'block';
+                    loginItem.style.display = 'none';
+                    userName.textContent = user.displayName || 'User';
+                    updateProfileInfo(user);
+                } else {
+                    window.location.href = 'log.html';
+                }
+            });
+        }
+
+        function updateProfileInfo(user) {
+            document.getElementById('profileName').textContent = user.displayName || 'Not set';
+            document.getElementById('profileEmail').textContent = user.email;
+            document.getElementById('profileCreated').textContent = new Date(user.metadata.creationTime).toLocaleDateString();
+        }
+
+        // Logout function
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            firebase.auth().signOut().then(() => {
+                window.location.href = 'log.html';
+            }).catch((error) => {
+                console.error('Error signing out:', error);
+            });
+        });
+
+        // Check login status when page loads
+        document.addEventListener('DOMContentLoaded', checkLoginStatus);
+    </script>
+</body>
+</html>

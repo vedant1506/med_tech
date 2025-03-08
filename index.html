@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Care</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="register.js" defer></script>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Navigation Bar */
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 50px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(135deg, rgb(11, 78, 78) 0%, rgb(20, 110, 110) 100%);
+            color: white;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* User Profile Styles */
+        .user-profile {
+            position: relative;
+        }
+
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            min-width: 200px;
+            z-index: 1000;
+        }
+
+        .user-profile:hover .user-dropdown {
+            display: block;
+        }
+
+        .user-dropdown a {
+            padding: 12px 15px;
+            display: block;
+            color: #333 !important;
+            border-bottom: 1px solid #eee;
+        }
+
+        .user-dropdown a:hover {
+            background: #f5f5f5;
+            transform: none !important;
+        }
+
+        #userProfileBtn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .fa-user-circle {
+            font-size: 1.2em;
+        }
+        
+        .chat-assistant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+        .chat-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgb(11, 78, 78);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: transform 0.3s ease;
+        }
+        .chat-button:hover {
+            transform: scale(1.1);
+        }
+        .chat-window {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 450px;
+            height: 600px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .chat-window.active {
+            display: flex;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .chat-header {
+            background: rgb(11, 78, 78);
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .chat-messages {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+        .chat-input button {
+            background: rgb(11, 78, 78);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            color: #e0f2f2;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .logo-img img {
+            height: 70px;
+            width: auto;
+        }
+        ul {
+            display: flex;
+            list-style: none;
+        }
+        ul li {
+            margin: 0 20px;
+        }
+        ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        ul li a:hover {
+            color: #e0f2f2;
+            transform: translateY(-2px);
+        }
+        /* Responsive Nav */
+        #bar {
+            font-size: 25px;
+            display: none;
+            cursor: pointer;
+        }
+        /* Chat Assistant Styles */
+        .chat-assistant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+        .chat-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgb(11, 78, 78);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: transform 0.3s ease;
+        }
+        .chat-button:hover {
+            transform: scale(1.1);
+        }
+        .chat-window {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 450px;
+            height: 600px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .chat-window.active {
+            display: flex;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .chat-header {
+            background: rgb(11, 78, 78);
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .chat-messages {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+        .chat-input button {
+            background: rgb(11, 78, 78);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        /* Main Section */
+        .main {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, rgb(16, 106, 106) 0%, rgb(32, 178, 170) 100%);
+            color: white;
+            padding: 80px 50px;
+            min-height: 600px;
+            margin-top: 70px;
+            position: relative;
+            overflow: hidden;
+        }
+        .main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+            opacity: 0.1;
+        }
+        .mainText {
+            max-width: 50%;
+            text-align: left;
+        }
+        .mainText h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .mainText h3 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: #e0f2f2;
+            margin-bottom: 1rem;
+            letter-spacing: 0.5px;
+        }
+        .mainText button {
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 30px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .mainText button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .tagline {
+            display: block;
+            font-size: 18px;
+            color: #e0f2f2;
+            margin-bottom: 15px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .mainText h1 {
+            font-size: 48px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: white;
+        }
+        .subtitle {
+            font-size: 20px;
+            color: #e0f2f2;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+        }
+        .primary-btn,
+        .secondary-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .primary-btn {
+            background-color: #4CAF50;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .secondary-btn {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        .primary-btn:hover,
+        .secondary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        .main-image {
+            width: 40%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .main-image img {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
+        }
+        .main img {
+            width: 40%;
+        }
+        /* Doctors Section */
+        .head {
+            text-align: center;
+            padding: 50px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .doctors {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .card {
+            width: 280px;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: 0.3s ease-in-out;
+            text-align: center;
+            padding: 15px;
+        }
+        .card:hover {
+            transform: scale(1.1);
+        }
+        .card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .card p {
+            margin-top: 12px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        /* Footer */
+        .footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 40px 50px;
+            color: white;
+            background-color: rgb(11, 78, 78);
+        }
+        .text h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+        .text p {
+            margin-top: 8px;
+            font-size: 16px;
+        }
+        /* Responsive Adjustments */
+        @media screen and (max-width: 1100px) {
+            .main {
+                flex-direction: column;
+                text-align: center;
+            }
+            .mainText {
+                max-width: 100%;
+                margin-bottom: 20px;
+            }
+        }
+        @media screen and (max-width: 900px) {
+            ul {
+                display: none;
+            }
+            .bar {
+                display: block;
+            }
+        }
+        @media screen and (max-width: 600px) {
+            .mainText h1 {
+                font-size: 36px;
+            }
+            .mainText h3 {
+                font-size: 24px;
+            }
+            .main img {
+                width: 80%;
+            }
+        }
+        @media screen and (max-width: 500px) {
+            .footer {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+    <script>
+        function loginUser(userData) {
+    if (!userData || !userData.name || !userData.email) {
+        console.error('Invalid user data provided');
+        return;
+    }
+
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('userName', userData.name);
+    localStorage.setItem('userEmail', userData.email);
+
+    // Debugging log
+    console.log("checkLoginStatus type:", typeof checkLoginStatus);
+
+    // Ensure this function is defined somewhere
+    if (typeof checkLoginStatus === 'function') {
+        checkLoginStatus();
+    } else {
+        console.warn('checkLoginStatus() is not defined.');
+    }
+}
+
+// Define checkLoginStatus() before calling loginUser()
+function checkLoginStatus() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (isLoggedIn === 'true') {
+        console.log('User is logged in.');
+        // Update UI elements here if needed
+    } else {
+        console.log('User is not logged in.');
+    }
+}
+
+    </script>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="logo">
+                <div class="logo-img"><img src="12Health.png"></div>
+            </div>
+            <i id="bar" class="fa-solid fa-bars"></i>
+
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="information.html"><i class="fas fa-info-circle"></i> Information</a></li>
+                <li><a href="consultancy.html"><i class="fas fa-comments"></i> Consultancy</a></li>
+                <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact Us</a></li>
+                <li><a href="about.html"><i class="fas fa-users"></i> About Us</a></li>
+                <li class="auth-item" id="login-item"><a href="log.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                <li class="user-profile" style="display: none;">
+                    <a href="#" id="userProfileBtn">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="userName">User</span>
+                    </a>
+                    <div class="user-dropdown">
+                        <a href="profile.html"><i class="fas fa-id-card"></i> My Profile</a>
+                        <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+                        <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <div class="main">
+            <div class="mainText">
+                <h1>Healing begins when you choose to care for your mind and soul.</h1>
+                <h3>NeuroTech Haven</h3>
+                <!-- <p> Lorem ipsum dolor sit amet consectetur adipisicing elit</p> -->
+                <button>Show More</button>
+            </div>
+            <div class="main-image fade-in">
+                <img src="mains.png" alt="Mental Health Care Illustration">
+            </div>
+        </div>
+        <div id="doctors">
+            <style>
+                .doctors {
+                    width: 90%;
+                    padding: 20px;
+                    margin: 100px auto;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                }
+                .card {
+                    width: 250px;
+                    margin: 0 10px;
+                    box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
+                    transition: 1s;
+                }
+                .card img {
+                    display: block;
+                    width: 100%;
+                    border-radius: 5px;
+                }
+                .card:hover {
+                    transform: scale(1.3);
+                    z-index: 2;
+                }
+            </style>
+            <div class="head">
+                <h2>"Prioritize Your Mind: Mental Health Matters"</h2>
+            </div>
+            <div class="doctors">
+                <div class="card">
+                    <img src="Anxiety Disorders.webp" alt="">
+                    <p>Anxienty Disorder</p>
+                </div>
+                <div class="card">
+                    <img src="OCD07.jpg" alt="">
+                    <p>OCD</p>
+                </div>
+                <div class="card">
+                    <img src="p5.jpg" alt="">
+                    <p>Depression</p>
+                </div>
+                <div class="card">
+                    <img src="Eating Disorders.jpeg" alt="">
+                    <p>Eating Disorder</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <div class="footer">
+        <div class="text">
+            <h3>About Us</h3>
+            <p>24 Hour's</p>
+            <p>Top Doctors</p>
+            <p>Best Care</p>
+            <p>Patient</p>
+        </div>
+        <div class="text">
+            <h3>Speciality</h3>
+            <p>Spin Surgery</p>
+            <p>Knee Surgery</p>
+            <p>Leg Surgery</p>
+            <p>Tendon Surgery</p>
+        </div>
+        <div class="text">
+            <h3>Best Teams</h3>
+            <p>Doctor</p>
+            <p>Nursing</p>
+            <p>Staff</p>
+            <p>Hospital</p>
+        </div>
+        <div class="text">
+            <h3>Address</h3>
+            <p>Near MG Road</p>
+            <p>Galaxy Care</p>
+            <p>333-00222</p>
+            <p>2222-4334</p>
+        </div>
+    </div>
+    </div>
+
+    <!-- Chat Assistant -->
+    <div class="chat-assistant">
+        <button class="chat-button" onclick="toggleChat()">
+            <i class="fas fa-comments"></i>
+        </button>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-user-md" style="font-size: 24px;"></i>
+                    <div>
+                        <h3 style="margin: 0;">Dr. Genie</h3>
+                        <small style="color: #e0f2f2;">AI Health Assistant</small>
+                    </div>
+                </div>
+                <button onclick="toggleChat()" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer;">×</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div style="background: #e1f5f5; padding: 10px; border-radius: 10px; max-width: 80%; margin-bottom: 10px;">
+                    Hello! I'm Dr. Genie, your AI health assistant. I can help you with general health questions and provide science-based information. How can I assist you today?
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="Ask me about your health concerns...">
+                <button onclick="sendMessage()" style="display: flex; align-items: center; gap: 5px;">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Replace with your actual API key
+        const API_KEY = 'AIzaSyBtxG0TWr4XU8t0VVvgOrB7LZwg9MksSPE';
+        const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent';
+
+        function toggleChat() {
+            const chatWindow = document.getElementById('chatWindow');
+            chatWindow.classList.toggle('active');
+        }
+
+        async function generateGeminiResponse(prompt) {
+            try {
+                const healthContext = `You are Dr. Genie, a helpful AI health assistant. You can provide general health information and guidance, but always:
+                - Focus only on health-related queries
+                - Provide science-based information
+                - Recommend consulting a doctor for serious concerns
+                - Avoid diagnosing specific conditions
+                - Be empathetic and professional
+                
+User's query: ${prompt}`;
+
+                const response = await fetch(`${API_URL}?key=${API_KEY}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: healthContext
+                            }]
+                        }],
+                        generationConfig: {
+                            temperature: 0.7,
+                            topK: 40,
+                            topP: 0.95,
+                            maxOutputTokens: 1024,
+                        },
+                        safetySettings: [
+                            {
+                                category: "HARM_CATEGORY_HARASSMENT",
+                                threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                            },
+                            {
+                                category: "HARM_CATEGORY_HATE_SPEECH",
+                                threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                            },
+                            {
+                                category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                                threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                            },
+                            {
+                                category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+                                threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                            }
+                        ]
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`API Error: ${errorData.error?.message || response.statusText}`);
+                }
+
+                const data = await response.json();
+                const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (!aiResponse) {
+                    throw new Error('No valid response from the API');
+                }
+
+                return aiResponse;
+            } catch (error) {
+                console.error('Error:', error);
+                return 'I apologize, but I encountered an error. Please ensure your API key is valid and try again.';
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const messages = document.getElementById('chatMessages');
+            const userMessage = input.value.trim();
+
+            if (userMessage !== '') {
+                // Display user message
+                const messageDiv = document.createElement('div');
+                messageDiv.style.marginBottom = '10px';
+                messageDiv.innerHTML = `<div style="background: #f0f0f0; padding: 10px; border-radius: 10px; max-width: 80%; margin-left: auto;">${userMessage}</div>`;
+                messages.appendChild(messageDiv);
+
+                // Clear input and scroll
+                input.value = '';
+                messages.scrollTop = messages.scrollHeight;
+
+                // Show typing indicator
+                const typingDiv = document.createElement('div');
+                typingDiv.style.marginBottom = '10px';
+                typingDiv.innerHTML = `<div style="background: #e1f5f5; padding: 10px; border-radius: 10px; max-width: 80%;">Typing...</div>`;
+                messages.appendChild(typingDiv);
+                messages.scrollTop = messages.scrollHeight;
+
+                // Get AI response
+                const aiResponse = await generateGeminiResponse(userMessage);
+
+                // Remove typing indicator and show AI response
+                messages.removeChild(typingDiv);
+                const responseDiv = document.createElement('div');
+                responseDiv.style.marginBottom = '10px';
+                responseDiv.innerHTML = `<div style="background: #e1f5f5; padding: 10px; border-radius: 10px; max-width: 80%;">${aiResponse}</div>`;
+                messages.appendChild(responseDiv);
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+
+        // Allow sending message with Enter key
+        document.getElementById('messageInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+<script>
+    // Check if user is logged in (you should implement this based on your authentication system)
+    function checkLoginStatus() {
+        // This is a placeholder. Replace with your actual login check
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        const userProfile = document.querySelector('.user-profile');
+        const loginLink = document.querySelector('a[href="log.html"]');
+        const userName = document.getElementById('userName');
+
+        if (isLoggedIn) {
+            userProfile.style.display = 'block';
+            loginLink.style.display = 'none';
+            userName.textContent = localStorage.getItem('userName') || 'User';
+        } else {
+            userProfile.style.display = 'none';
+            loginLink.style.display = 'block';
+        }
+    }
+
+    // Logout function
+    document.getElementById('logoutBtn').addEventListener('click', function (e) {
+        e.preventDefault();
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('userName');
+        window.location.href = 'log.html';
+    });
+
+    // Check login status when page loads
+    document.addEventListener('DOMContentLoaded', checkLoginStatus);
+</script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script>
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCjqrv80zEoWDaEGe9STuHijYeO2mMZ3O0",
+        authDomain: "neurotech-haven.firebaseapp.com",
+        projectId: "neurotech-haven",
+        storageBucket: "neurotech-haven.appspot.com",
+        messagingSenderId: "239242066260",
+        appId: "1:239242066260:web:d1ac756b0600ef8b0f30c1"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Check if user is logged in
+    function checkLoginStatus() {
+        const userProfile = document.querySelector('.user-profile');
+        const loginItem = document.getElementById('login-item');
+        const userName = document.getElementById('userName');
+
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                userProfile.style.display = 'block';
+                loginItem.style.display = 'none';
+                userName.textContent = user.displayName || 'User';
+            } else {
+                userProfile.style.display = 'none';
+                loginItem.style.display = 'block';
+            }
+        });
+    }
+
+    // Logout function
+    document.getElementById('logoutBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        firebase.auth().signOut().then(() => {
+            window.location.href = 'log.html';
+        }).catch((error) => {
+            console.error('Error signing out:', error);
+        });
+    });
+
+    // Check login status when page loads
+    document.addEventListener('DOMContentLoaded', checkLoginStatus);
+</script>
